@@ -1,6 +1,10 @@
 from collections import namedtuple
 from datetime import date, timedelta
 
+import numpy
+from keras.layers import Dense
+from keras.models import Sequential
+
 Assignment = namedtuple('Assignment', ['name', 'due', 'hours'])
 
 GAMMA = 2
@@ -69,3 +73,51 @@ def _schedule_one(available, hours, gamma):
         i %= n_days
 
     return result
+
+def predict_hours(assignments, yourPastAsssignments, assignmentName):
+
+    assignments = []
+    assignmentName = ["Random Lab", "Bignum Lab", "Skyline Lab", "Paren Lab"]
+
+    yourPastAsssignments = [
+            Assignment(name="Random Lab", due="sdgfhjk", hours=3.6),
+            Assignment(name="Bignum Lab", due="sdgfhjk", hours=2.6),
+            Assignment(name="Skyline Lab", due="sdgfhjk", hours=12.9),
+            Assignment(name="Paren Lab", due="sdgfhjk", hours=5.2),
+            Assignment(name="Integral Lab", due="sdgfhjk", hours=1.5)
+        ]
+
+    assignmentName = "Test Lab"
+    assignmentHours = 5
+
+    for a in assignments:
+        if a.name == assignmentName:
+            assignmentHours = a.hours
+
+    commonAssignments = []
+    for a1 in assignments:
+        for a2 in yourPastAsssignments:
+            if a1.name == a2.name:
+                commonAssignments.append((a1, a2))
+    X = []
+    for (a, _) in commonAssignments:
+        X.append(a.hours)
+
+    Y = []
+    for (_, a) in commonAssignments:
+        Y.append(a.hours)
+
+    model = Sequential()
+    model.add(Dense(12, input_dim=1, activation='relu'))
+    model.add(Dense(8, activation='relu'))
+    model.add(Dense(1, activation='relu'))
+
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+    # Fit the model
+    model.fit(X, Y, epochs=150, batch_size=10)
+
+    scores = model.evaluate(X, Y)
+    print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+
+    return model.predict([assignmentHours])

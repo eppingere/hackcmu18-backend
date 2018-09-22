@@ -1,0 +1,76 @@
+
+/* Input Format */
+
+{
+   "availability":{
+      "2018-09-23T23:59:59.511Z":10.0,
+      "2018-09-24T23:59:59.511Z":11.0,
+      "2018-09-25T23:59:59.511Z":12.0,
+      "2018-09-26T23:59:59.511Z":13.0,
+      "2018-09-27T23:59:59.511Z":6.0
+   },
+   "classes":{
+      "07-128":{
+         "assignments":{
+            "Mandatory Socializing":{
+               "dueDate":"2018-09-25T23:59:59.511Z",
+               "hoursToComplete":0.5,
+               "ohRate":0.0
+            },
+            "Memorize all 7 SCS Departments":{
+               "dueDate":"2018-09-23T23:59:59.511Z",
+               "hoursToComplete":2.0,
+               "ohRate":2.0
+            }
+         }
+      },
+      "07-131":{
+         "assignments":{
+            "Written 1":{
+               "dueDate":"2018-09-29T23:59:59.511Z",
+               "hoursToComplete":6.3,
+               "ohRate":1.5
+            },
+            "Programming 1":{
+               "dueDate":"2018-10-03T23:59:59.511Z",
+               "hoursToComplete":4.0,
+               "ohRate":0.5
+            }
+         }
+      }
+   }
+}
+/* Output Format */
+
+{
+   "classes":{
+      "07-128":{
+         "assignments":{
+            "Mandatory Socializing":{
+               "dueDate":"2018-09-25T23:59:59.511Z",
+               "hoursToComplete":0.5,
+               "ohRate":0.0
+            },
+            "Memorize all 7 SCS Departments":{
+               "dueDate":"2018-09-23T23:59:59.511Z",
+               "hoursToComplete":2.0,
+               "ohRate":2.0
+            }
+         }
+      },
+      "07-131":{
+         "assignments":{
+            "Written 1":{
+               "dueDate":"2018-09-29T23:59:59.511Z",
+               "hoursToComplete":6.3,
+               "ohRate":1.5
+            },
+            "Programming 1":{
+               "dueDate":"2018-10-03T23:59:59.511Z",
+               "hoursToComplete":4.0,
+               "ohRate":0.5
+            }
+         }
+      }
+   }
+}
