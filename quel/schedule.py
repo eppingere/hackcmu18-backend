@@ -5,7 +5,7 @@ import numpy
 from keras.layers import Dense
 from keras.models import Sequential
 
-Assignment = namedtuple('Assignment', ['name', 'due', 'hours'])
+from .models import Assignment
 
 GAMMA = 2
 
