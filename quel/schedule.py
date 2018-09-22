@@ -1,7 +1,7 @@
 from collections import namedtuple
 from datetime import date, timedelta
 
-Assignment = namedtuple('Assignment', ['name', 'due', 'hours'])
+from .models import Assignment
 
 GAMMA = 2
 
