@@ -13,7 +13,7 @@ def days(x):
 def schedule(assignments, available_times, *, gamma=GAMMA):
 
     if len(assignments) == 0:
-        return [], available_times
+        return {}, available_times
 
     soonest = min(assignments, key=lambda a: a.due)
     ind = assignments.index(soonest)
@@ -34,7 +34,7 @@ def schedule(assignments, available_times, *, gamma=GAMMA):
         available_times, gamma=gamma
     )
 
-    return [result, *rest], available_times
+    return {soonest: result, **rest}, available_times
 
 
 def schedule_one(assignment, available_times, *, gamma=GAMMA):
