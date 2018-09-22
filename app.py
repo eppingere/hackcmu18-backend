@@ -4,9 +4,7 @@ from flask import Flask, jsonify, request
 
 import rethinkdb as r
 from quel.models import Assignment, Availability, Course, from_iso, to_iso
-from quel.schedule import schedule
-
-from quel.schedule import predict_hours
+from quel.schedule import predict_hours, schedule
 
 app = Flask(__name__)
 conn = r.connect(db='quel')
@@ -77,10 +75,10 @@ def sorted_things():
     return jsonify(sort_a_list([4,3,2]))
 
 
-@app.route("/trainModel")
+@app.route("/predict")
 def train_model():
-    print(predict_hours([], [], "fdghjk"))
-    return jsonify({"success?" : True})
+    prediction = predict_hours()
+    return jsonify(prediction.tolist())
 
 
 

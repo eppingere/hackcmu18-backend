@@ -1,7 +1,8 @@
+import random
 from collections import namedtuple
 from datetime import date, timedelta
 
-import numpy
+import numpy as np
 from keras.layers import Dense
 from keras.models import Sequential
 
@@ -74,50 +75,27 @@ def _schedule_one(available, hours, gamma):
 
     return result
 
-def predict_hours(assignments, yourPastAsssignments, assignmentName):
 
-    assignments = []
-    assignmentName = ["Random Lab", "Bignum Lab", "Skyline Lab", "Paren Lab"]
+def generate_fake_person():
+    r = random.uniform(0.8, 1.2)
 
-    yourPastAsssignments = [
-            Assignment(name="Random Lab", due="sdgfhjk", hours=3.6),
-            Assignment(name="Bignum Lab", due="sdgfhjk", hours=2.6),
-            Assignment(name="Skyline Lab", due="sdgfhjk", hours=12.9),
-            Assignment(name="Paren Lab", due="sdgfhjk", hours=5.2),
-            Assignment(name="Integral Lab", due="sdgfhjk", hours=1.5)
-        ]
+    return [r * 2, r * 9, r * 7.5], r * 10
 
-    assignmentName = "Test Lab"
-    assignmentHours = 5
 
-    for a in assignments:
-        if a.name == assignmentName:
-            assignmentHours = a.hours
+def predict_hours():
+    random_people = [generate_fake_person() for _ in range(1000)]
 
-    commonAssignments = []
-    for a1 in assignments:
-        for a2 in yourPastAsssignments:
-            if a1.name == a2.name:
-                commonAssignments.append((a1, a2))
-    X = []
-    for (a, _) in commonAssignments:
-        X.append(a.hours)
-
-    Y = []
-    for (_, a) in commonAssignments:
-        Y.append(a.hours)
+    X_train = np.array([p[0] for p in random_people])
+    y_train = np.array([p[1] for p in random_people])
 
     model = Sequential()
-    model.add(Dense(12, input_dim=1, activation='relu'))
-    model.add(Dense(8, activation='relu'))
+    model.add(Dense(16, input_dim=3, activation='relu'))
     model.add(Dense(1, activation='relu'))
 
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='mean_squared_error', optimizer='adam')
 
     # Fit the model
-    model.fit(X, Y, epochs=150, batch_size=10)
+    model.fit(X_train, y_train, epochs=150, batch_size=100)
 
-    scores = model.evaluate(X, Y)
-    print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
-
-    return model.predict([assignmentHours])
+    X = np.array([[4, 20, 9]])
+    return model.predict(X)
