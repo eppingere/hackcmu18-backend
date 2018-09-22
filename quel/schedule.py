@@ -48,36 +48,24 @@ def schedule_one(assignment, available_times, *, gamma=GAMMA):
     if total_free < assignment.hours:
         return
 
-    hours_given, overflow = fill_to(assignment.hours, gamma, period.days + 1)
-    hours = _schedule_one(time_until, hours_given, overflow)
+    hours = _schedule_one(time_until, assignment.hours, gamma)
 
     return {today + days(d): h for (d, h) in zip(range(period.days + 1), hours)}
 
 
-def _schedule_one(available, requested, overflow=0):
-    chops = chopped(available, requested)
+def _schedule_one(available, hours, gamma):
+    n_days = len(available)
 
-    overflow += sum(chops)
-    assert overflow >= 0
+    i = 0
+    result = [0 for _ in range(n_days)]
 
-    if not overflow:
-        return requested
+    while hours > 0:
+        delta = min(available[i], gamma, hours)
+        result[i] += delta
+        available[i] -= delta
+        hours -= delta
 
-    not_full = [day == 0 for day in chops]
-    delta = overflow / sum(not_full)
+        i += 1
+        i %= n_days
 
-    requested_ = [(r - c if c else r + delta)
-                  for (r, c) in zip(requested, chops)]
-
-    return _schedule_one(available, requested_)
-
-
-def chopped(available, requested):
-    return [max(r - a, 0) for (r, a) in zip(requested, available)]
-
-
-def fill_to(value, maximum, length):
-    zeros = [0 for _ in range(length)]  # HACK
-    result = [*([maximum] * (value // maximum)), value % maximum, *zeros]
-
-    return result[:length], sum(result[length:])
+    return result
